@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { DEFAULT_CITY, RECENT_SEARCHES_LIMIT } from '../constants';
-import { fetchCurrentLocationWeather, fetchForecastByCoords, fetchForecastData, fetchWeatherData } from '../services/weatherApi';
+import { fetchCurrentLocationWeather, fetchCurrentWeather, fetchForecast, fetchForecastByCoords, searchLocation } from '../services/weatherApi';
 
 const getStoredSearches = () => {
   if (typeof window === 'undefined') return [];
@@ -30,14 +30,17 @@ export const useWeather = () => {
   });
 
   const applyWeatherResponse = (weatherResponse, forecastResponse) => {
-    const dailyForecast = forecastResponse.list.filter((_, index) => index % 8 === 0).slice(0, 7);
+    const dailyForecast = Array.isArray(forecastResponse?.list)
+      ? forecastResponse.list.filter((_, index) => index % 8 === 0).slice(0, 7)
+      : [];
 
     setWeather(weatherResponse);
     setForecast(dailyForecast);
-    setCity(weatherResponse.name);
+    setCity(weatherResponse.displayName || weatherResponse.name);
 
     setRecentSearches((prev) => {
-      const nextSearches = [weatherResponse.name, ...prev.filter((item) => item !== weatherResponse.name)].slice(0, RECENT_SEARCHES_LIMIT);
+      const nextSearch = weatherResponse.displayName || weatherResponse.name;
+      const nextSearches = [nextSearch, ...prev.filter((item) => item !== nextSearch)].slice(0, RECENT_SEARCHES_LIMIT);
       saveStoredSearches(nextSearches);
       return nextSearches;
     });
@@ -91,16 +94,17 @@ export const useWeather = () => {
       });
 
       const { latitude, longitude } = position.coords;
-      console.log('Latitude:', latitude);
-      console.log('Longitude:', longitude);
+      const locationInfo = {
+        name: 'Current location',
+        state: '',
+        country: '',
+        displayName: 'Current location',
+      };
 
       const weatherResponse = await fetchCurrentLocationWeather(latitude, longitude);
-      console.log('Weather API response:', weatherResponse);
-
       const forecastResponse = await fetchForecastByCoords(latitude, longitude);
-      console.log('Forecast API response:', forecastResponse);
 
-      applyWeatherResponse(weatherResponse, forecastResponse);
+      applyWeatherResponse({ ...weatherResponse, ...locationInfo }, forecastResponse);
     } catch (err) {
       console.error('Geolocation error:', err);
       setError(err.message || 'Unable to fetch weather for your location.');
@@ -114,7 +118,7 @@ export const useWeather = () => {
   const loadWeather = async (searchCity, useLocation = false) => {
     const normalizedCity = (searchCity || '').trim();
     if (!normalizedCity && !useLocation) {
-      setError('Please enter a city name.');
+      setError('Please enter a location.');
       setLoading(false);
       return;
     }
@@ -131,12 +135,9 @@ export const useWeather = () => {
         return;
       }
 
-      console.log('Search city:', normalizedCity);
-      weatherResponse = await fetchWeatherData(normalizedCity);
-      console.log('Weather API response:', weatherResponse);
-
-      const forecastResponse = await fetchForecastByCoords(weatherResponse.coord.lat, weatherResponse.coord.lon);
-      console.log('Forecast API response:', forecastResponse);
+      const locationInfo = await searchLocation(normalizedCity);
+      weatherResponse = await fetchCurrentWeather(locationInfo.lat, locationInfo.lon, locationInfo);
+      const forecastResponse = await fetchForecast(locationInfo.lat, locationInfo.lon, locationInfo);
 
       applyWeatherResponse(weatherResponse, forecastResponse);
     } catch (err) {
@@ -173,6 +174,9 @@ export const useWeather = () => {
       icon: weather.weather[0].icon,
       country: weather.sys.country,
       name: weather.name,
+      state: weather.state,
+      country: weather.country,
+      displayName: weather.displayName,
     };
   }, [weather]);
 

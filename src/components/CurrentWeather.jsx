@@ -27,7 +27,7 @@ const CurrentWeather = ({ weather }) => {
       <div className="current-main">
         <div>
           <p className="eyebrow">Now</p>
-          <h2>{weather?.name}, {weather?.country}</h2>
+          <h2>{weather?.displayName || `${weather?.name}${weather?.country ? `, ${weather?.country}` : ''}`}</h2>
           <p className="weather-description">{weather?.description}</p>
         </div>
         <div className="weather-icon-wrap">

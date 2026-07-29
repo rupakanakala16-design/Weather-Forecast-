@@ -12,7 +12,7 @@ const SearchBar = ({ city, setCity, onSearch, onUseLocation, recentSearches }) =
           <input
             value={city}
             onChange={(event) => setCity(event.target.value)}
-            placeholder="Search for a city"
+            placeholder="Search for a city, town, village, or landmark"
           />
         </div>
         <div className="button-row">
