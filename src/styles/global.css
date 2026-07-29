@@ -1,0 +1,228 @@
+:root {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #f8fafc;
+  background: linear-gradient(135deg, #07111f, #1b3b6f 45%, #5a7cfd);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='light'] {
+  color: #0f172a;
+  background: linear-gradient(135deg, #dbeafe, #f8fafc 55%, #e2e8f0);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; }
+body { min-height: 100vh; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 24px;
+  color: inherit;
+}
+
+.navbar, .search-card, .current-weather-card, .details-card, .section-card, .error-card, .footer {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+}
+
+:root[data-theme='light'] .navbar,
+:root[data-theme='light'] .search-card,
+:root[data-theme='light'] .current-weather-card,
+:root[data-theme='light'] .details-card,
+:root[data-theme='light'] .section-card,
+:root[data-theme='light'] .error-card,
+:root[data-theme='light'] .footer {
+  background: rgba(255, 255, 255, 0.75);
+  color: #0f172a;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: 24px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.72rem;
+  opacity: 0.75;
+  margin: 0 0 4px;
+}
+
+.navbar h1, .section-heading h3, .details-card h3, .error-card h3 {
+  margin: 0;
+}
+
+.theme-toggle, .search-form button, .secondary-btn, .chips button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.theme-toggle:hover, .search-form button:hover, .secondary-btn:hover, .chips button:hover {
+  transform: translateY(-2px);
+}
+
+.theme-toggle {
+  background: linear-gradient(135deg, #60a5fa, #8b5cf6);
+  color: white;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+}
+
+.main-content {
+  display: grid;
+  gap: 18px;
+}
+
+.search-card, .current-weather-card, .details-card, .section-card, .error-card {
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.search-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.input-group {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+}
+
+.input-group input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-form button, .secondary-btn, .chips button {
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.secondary-btn { background: rgba(255,255,255,0.2); color: inherit; }
+
+.recent-searches { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { background: rgba(255,255,255,0.18); color: inherit; padding: 8px 12px; }
+
+.current-weather-card {
+  display: grid;
+  gap: 16px;
+}
+
+.current-main, .temperature-row, .detail-item, .forecast-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.current-main { gap: 18px; }
+.weather-description { text-transform: capitalize; opacity: 0.8; }
+.weather-icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.16);
+}
+.temperature-row { flex-wrap: wrap; gap: 12px; }
+.temperature-row h3 { font-size: 2rem; margin: 0; }
+.pill {
+  background: rgba(255,255,255,0.18);
+  padding: 8px 12px;
+  border-radius: 999px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.detail-item {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.12);
+  justify-content: flex-start;
+  gap: 12px;
+}
+.detail-item p { margin: 0; opacity: 0.8; }
+.detail-item strong { display: block; }
+.detail-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.2); }
+
+.section-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.section-heading p { opacity: 0.8; }
+.forecast-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.forecast-card { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; border-radius: 16px; background: rgba(255,255,255,0.12); }
+.forecast-card h4 { margin: 0; }
+.forecast-card span { text-transform: capitalize; opacity: 0.8; font-size: 0.9rem; }
+
+.loader { display: grid; place-items: center; padding: 24px; }
+.spinner {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top-color: #38bdf8;
+  animation: spin 900ms linear infinite;
+}
+.error-card { color: #fecaca; }
+.footer { text-align: center; margin-top: 20px; padding: 16px; border-radius: 16px; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .forecast-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 640px) {
+  .app-shell { padding: 14px; }
+  .navbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .current-main { flex-direction: column; align-items: flex-start; }
+  .details-grid, .forecast-row { grid-template-columns: 1fr; }
+  .search-form { flex-direction: column; }
+  .button-row { width: 100%; }
+  .button-row button { flex: 1; justify-content: center; }
+}
